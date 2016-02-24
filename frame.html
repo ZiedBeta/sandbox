@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>iFrame</title>
+    <script src="js/parent-origin-requester.js"></script>
+</head>
+
+<body>
+    
+    <script>
+        function requestParentOrigin() {
+            ParentOriginRequester.getParentOrigin(function(origin) {
+                console.log('parent origin => ' + origin);
+                var span = document.createElement('span');
+                span.innerText = origin;
+                document.getElementById('origin').appendChild(span);
+                document.getElementById('origin').appendChild(document.createElement('br'));
+                
+            });    
+       }
+    </script>
+    <div id="origin"></div>
+    <button onclick="requestParentOrigin();">Request parent origin</button>
+    
+
+</body>
+
+</html>
