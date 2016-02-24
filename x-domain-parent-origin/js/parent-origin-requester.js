@@ -4,12 +4,14 @@ ParentOriginRequester = (function (window, undefined) {
 
     var parentOriginRequestCallback;
     var messageHandler = function (event) {
-        var message = JSON.parse(event.data);
-        if (message.hasOwnProperty('type') && message.type === 'parentOriginResponse'
-            && parentOriginRequestCallback !== null) {
-            disposeWindowSubscription();
-            parentOriginRequestCallback(message.origin);
-        }
+        try {
+            var message = JSON.parse(event.data);
+            if (message.hasOwnProperty('type') && message.type === 'parentOriginResponse'
+                && parentOriginRequestCallback !== null) {
+                disposeWindowSubscription();
+                parentOriginRequestCallback(message.origin);
+            }
+        } catch (e) {}
     }
 
     function subscribeToWindowMessages() {
@@ -24,10 +26,10 @@ ParentOriginRequester = (function (window, undefined) {
     }
 
     function disposeWindowSubscription() {
-        if (window.addEventListener) {
+        if (window.removeEventListener) {
             window.removeEventListener('message', messageHandler, false);
         }
-        else if (window.attachEvent) {
+        else if (window.detachEvent) {
             window.detachEvent('onmessage', messageHandler, false);
         }
     }
